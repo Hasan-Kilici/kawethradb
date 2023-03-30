@@ -8,7 +8,7 @@ package main
 
 import (
 	"fmt"
-	kawethradb "main/KawethraDB"
+	kawethradb "https://github.com/Hasan-Kilici/kawethradb"
 )
 
 type Ogrenci struct {
@@ -39,7 +39,7 @@ package main
 
 import (
 	"fmt"
-	kawethradb "main/KawethraDB"
+	kawethradb "https://github.com/Hasan-Kilici/kawethradb"
 )
 
 type Ogrenci struct {
@@ -61,7 +61,7 @@ package main
 
 import (
 	"fmt"
-	kawethradb "main/KawethraDB"
+	kawethradb "https://github.com/Hasan-Kilici/kawethradb"
 )
 
 type Ogrenci struct {
@@ -89,7 +89,7 @@ package main
 
 import (
 	"fmt"
-	kawethradb "main/KawethraDB"
+	kawethradb "https://github.com/Hasan-Kilici/kawethradb"
 )
 
 func main(){
@@ -103,7 +103,7 @@ func main(){
 package main
 
 import (
-	kawethradb "main/KawethraDB"
+	kawethradb "https://github.com/Hasan-Kilici/kawethradb"
 )
 
 func main(){
@@ -116,7 +116,7 @@ package main
 
 import (
 	"fmt"
-	kawethradb "main/KawethraDB"
+	kawethradb "https://github.com/Hasan-Kilici/kawethradb"
 )
 
 func main(){
