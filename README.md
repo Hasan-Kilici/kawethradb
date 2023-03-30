@@ -1,5 +1,10 @@
 # kawethradb <br>
 Open Source CSV Database Module For Golang
+
+### WHY KawethraDB?!?!?
+Because KawethraDB does not distinguish datatype. 
+which means that a garbage collector programming language like go will be more integrated and work more seamlessly.
+
 <br><br><br>
 ## Commands <br>
 ### Create DB
