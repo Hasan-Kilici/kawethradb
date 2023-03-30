@@ -1,4 +1,4 @@
-package kawethradb
+package kawethradbUtils
 
 import (
 	"encoding/csv"
