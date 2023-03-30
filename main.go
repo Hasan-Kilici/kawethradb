@@ -1,8 +1,9 @@
-package main
+package kawethradb
 
 import (
 	"fmt"
-	kawethradb "main/KawethraDB"
+
+	kawethradb "github.com/Hasan-Kilici/kawethradb/KawethraDBUtils"
 )
 
 type Ogrenci struct {
@@ -25,9 +26,13 @@ func main() {
 		fmt.Println("DB oluşturma hatası:", err)
 		return
 	}
+	ogrenci := Ogrenci{ID: 1, Ad: "Ali", Soyad: "Veli", Sinif: 9}
+	kawethradb.Insert("./data/Ogrenciler.csv", ogrenci)
 
+	find, _ := kawethradb.Find("./data/Ogrenciler.csv", "ID", 3)
+	fmt.Println(find)
 	fmt.Println("DB oluşturuldu!")
-	yeniVeri := []string{"2", "Hasan", "Kılıcı", "12"}
+	/*yeniVeri := []string{"2", "Hasan", "Kılıcı", "12"}
 	err = kawethradb.Update("./data/Ogrenciler.csv", "ID", 2, yeniVeri)
 	if err != nil {
 		fmt.Println("Kayıt güncellenirken bir hata oluştu:", err)
@@ -35,5 +40,5 @@ func main() {
 	}
 
 	fmt.Println("Kayıt başarıyla güncellendi.")
-	kawethradb.Delete("./data/Ogrenciler.csv", "ID", 2)
+	kawethradb.Delete("./data/Ogrenciler.csv", "ID", 2)*/
 }
