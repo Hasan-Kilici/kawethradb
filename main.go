@@ -139,6 +139,35 @@ func Update(filename string, idColumnName string, id int, record []string) error
 	return nil
 }
 
+func UpdateByID(filename string, id int, record []string) error {
+	records, err := ReadCSV(filename)
+	if err != nil {
+		return err
+	}
+
+	var rowIndex int = -1
+	for i, r := range records {
+		if i == 0 {
+			continue
+		}
+		if idValue, err := strconv.Atoi(r[indexOf(records[0], "ID")]); err == nil && idValue == id {
+			rowIndex = i
+			break
+		}
+	}
+
+	if rowIndex != -1 {
+		copy(records[rowIndex], record)
+	} else {
+		return fmt.Errorf("no record found with ID=%d", id)
+	}
+
+	if err := WriteCSV(filename, records); err != nil {
+		return err
+	}
+
+	return nil
+}
 func indexOf(slice []string, target string) int {
 	for i, value := range slice {
 		if value == target {
