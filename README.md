@@ -215,10 +215,8 @@ yeniVeri := []string{"2", "Hasan", "Kılıcı", "12"}
 package main
 
 import (
-	"fmt"
-  "os"
-	kawethradb "github.com/Hasan-Kilici/kawethradb"
-  "encoding/csv"
+  "fmt"
+  kawethradb "github.com/Hasan-Kilici/kawethradb"
 )
 
 type Ogrenci struct {
