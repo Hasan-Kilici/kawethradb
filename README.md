@@ -187,6 +187,26 @@ yeniVeri := []string{"2", "Hasan", "Kılıcı", "12"}
 	fmt.Println("Kayıt başarıyla güncellendi.")
 }
 ```
+### Update By ID
+```go
+package main
+
+import (
+	"fmt"
+	kawethradb "github.com/Hasan-Kilici/kawethradb"
+)
+
+func main(){
+yeniVeri := []string{"2", "Hasan", "Kılıcı", "12"}
+	err = kawethradb.UpdateByID("./data/Ogrenciler.csv", 1, yeniVeri)
+	if err != nil {
+		fmt.Println("Kayıt güncellenirken bir hata oluştu:", err)
+		return
+	}
+
+	fmt.Println("Kayıt başarıyla güncellendi.")
+}
+```
 </div>
 <div id="count">
 
