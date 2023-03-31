@@ -16,6 +16,7 @@ which means that a garbage collector programming language like go will be more i
 </tr>
 </table>
 <br><br><br>
+
 ## Commands <br>
 
 <div id="create">
@@ -121,10 +122,24 @@ func main(){
 	fmt.Println(find)
 }
 ```
+### Find By ID
+```go
+package main
+
+import (
+	"fmt"
+	kawethradb "github.com/Hasan-Kilici/kawethradb"
+)
+
+func main(){
+	find, _ := kawethradb.FindByID("./data/Ogrenciler.csv", 3)
+	fmt.Println(find)
+}
+```
 </div>
 <div id="delete">
 
-## Delete
+### Delete
 ```go
 package main
 
@@ -134,6 +149,18 @@ import (
 
 func main(){
   kawethradb.Delete("./data/Ogrenciler.csv", "ID", 2)
+}
+```
+### Delete By ID
+```go
+package main
+
+import (
+	kawethradb "github.com/Hasan-Kilici/kawethradb"
+)
+
+func main(){
+  kawethradb.DeleteByID("./data/Ogrenciler.csv", 2)
 }
 ```
 </div>
