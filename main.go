@@ -267,6 +267,53 @@ func Find(csvFilePath, columnName string, columnValue interface{}) (map[string]s
 	return nil, fmt.Errorf("Csv dosyasında Kayıt bulunamadı %s = %v", columnName, columnValue)
 }
 
+func FindByID(csvFilePath string, columnValue interface{}) (map[string]string, error) {
+	file, err := os.Open(csvFilePath)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	reader := csv.NewReader(file)
+
+	header, err := reader.Read()
+	if err != nil {
+		return nil, err
+	}
+
+	columnIndex := -1
+	for i, name := range header {
+		if name == "ID" {
+			columnIndex = i
+			break
+		}
+	}
+
+	if columnIndex == -1 {
+		return nil, fmt.Errorf("Column %s not found in CSV file", "ID")
+	}
+
+	for {
+		record, err := reader.Read()
+		if err != nil {
+			if err == io.EOF {
+				break
+			} else {
+				return nil, err
+			}
+		}
+
+		if record[columnIndex] == fmt.Sprintf("%v", columnValue) {
+			result := make(map[string]string)
+			for i, name := range header {
+				result[name] = record[i]
+			}
+			return result, nil
+		}
+	}
+	return nil, fmt.Errorf("Csv dosyasında Kayıt bulunamadı %s = %v", "ID", columnValue)
+}
+
 func Delete(csvFilePath string, columnName string, columnValue interface{}) error {
 	file, err := os.Open(csvFilePath)
 	if err != nil {
@@ -317,6 +364,56 @@ func Delete(csvFilePath string, columnName string, columnValue interface{}) erro
 	return nil
 }
 
+func DeleteByID(csvFilePath string, columnValue interface{}) error {
+	file, err := os.Open(csvFilePath)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	reader := csv.NewReader(file)
+	rows, err := reader.ReadAll()
+	if err != nil {
+		return err
+	}
+
+	columnIndex := -1
+	for i, name := range rows[0] {
+		if name == "ID" {
+			columnIndex = i
+			break
+		}
+	}
+
+	if columnIndex == -1 {
+		return fmt.Errorf("Column %s not found in CSV file", "ID")
+	}
+
+	var newRows [][]string
+	for i, row := range rows {
+		if i == 0 || row[columnIndex] != fmt.Sprintf("%v", columnValue) {
+			newRows = append(newRows, row)
+		}
+	}
+
+	file, err = os.Create(csvFilePath)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	writer := csv.NewWriter(file)
+	defer writer.Flush()
+
+	for _, row := range newRows {
+		if err := writer.Write(row); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 func Count(filePath string) int {
 	file, err := os.Open(filePath)
 	if err != nil {
@@ -326,6 +423,6 @@ func Count(filePath string) int {
 	defer file.Close()
 
 	count, _ := csv.NewReader(file).ReadAll()
-	newcount := len(count)-1
+	newcount := len(count) - 1
 	return newcount
 }
