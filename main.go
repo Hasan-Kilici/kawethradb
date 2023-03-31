@@ -326,6 +326,6 @@ func Count(filePath string) int {
 	defer file.Close()
 
 	count, _ := csv.NewReader(file).ReadAll()
-	newcount := cap(count) - 1
+	newcount := len(count)-1
 	return newcount
 }
