@@ -178,7 +178,7 @@ import (
 
 func main(){
 yeniVeri := []string{"2", "Hasan", "Kılıcı", "12"}
-	err = kawethradb.Update("./data/Ogrenciler.csv", "ID", 2, yeniVeri)
+	err := kawethradb.Update("./data/Ogrenciler.csv", "ID", 2, yeniVeri)
 	if err != nil {
 		fmt.Println("Kayıt güncellenirken bir hata oluştu:", err)
 		return
@@ -198,7 +198,7 @@ import (
 
 func main(){
 yeniVeri := []string{"2", "Hasan", "Kılıcı", "12"}
-	err = kawethradb.UpdateByID("./data/Ogrenciler.csv", 1, yeniVeri)
+	err := kawethradb.UpdateByID("./data/Ogrenciler.csv", 1, yeniVeri)
 	if err != nil {
 		fmt.Println("Kayıt güncellenirken bir hata oluştu:", err)
 		return
