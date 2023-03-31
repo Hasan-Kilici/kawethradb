@@ -17,7 +17,7 @@ which means that a garbage collector programming language like go will be more i
 </table>
 <br><br><br>
 
-## Commands <br>
+## Commands
 
 <div id="create">
 
@@ -151,6 +151,7 @@ func main(){
   kawethradb.Delete("./data/Ogrenciler.csv", "ID", 2)
 }
 ```
+	
 ### Delete By ID
 ```go
 package main
