@@ -285,14 +285,36 @@ func Find(csvFilePath, columnName string, columnValue interface{}) (map[string]s
 			}
 		}
 
-		if record[columnIndex] == fmt.Sprintf("%v", columnValue) {
-			result := make(map[string]string)
-			for i, name := range header {
-				result[name] = record[i]
+		switch v := columnValue.(type) {
+		case int:
+			if val, err := strconv.Atoi(record[columnIndex]); err == nil && val == v {
+				result := make(map[string]string)
+				for i, name := range header {
+					result[name] = record[i]
+				}
+				return result, nil
 			}
-			return result, nil
+		case float64:
+			if val, err := strconv.ParseFloat(record[columnIndex], 64); err == nil && val == v {
+				result := make(map[string]string)
+				for i, name := range header {
+					result[name] = record[i]
+				}
+				return result, nil
+			}
+		case string:
+			if record[columnIndex] == v {
+				result := make(map[string]string)
+				for i, name := range header {
+					result[name] = record[i]
+				}
+				return result, nil
+			}
+		default:
+			return nil, fmt.Errorf("Unsupported column value type: %T", columnValue)
 		}
 	}
+
 	return nil, fmt.Errorf("Csv dosyasında Kayıt bulunamadı %s = %v", columnName, columnValue)
 }
 
