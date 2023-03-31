@@ -109,27 +109,38 @@ func WriteCSV(filename string, records [][]string) error {
 	return nil
 }
 
-func Update(filename string, idColumnName string, id int, record []string) error {
+func Update(filename string, columnName string, columnValue string, newRecord []string) error {
 	records, err := ReadCSV(filename)
 	if err != nil {
 		return err
 	}
 
-	var rowIndex int = -1
-	for i, r := range records {
-		if i == 0 {
-			continue
-		}
-		if idValue, err := strconv.Atoi(r[indexOf(records[0], idColumnName)]); err == nil && idValue == id {
-			rowIndex = i
+	var found bool = false
+	var colIndex int = -1
+	for i, col := range records[0] {
+		if col == columnName {
+			colIndex = i
 			break
 		}
 	}
 
-	if rowIndex != -1 {
-		copy(records[rowIndex], record)
-	} else {
-		return fmt.Errorf("no record found with ID=%d", id)
+	if colIndex == -1 {
+		return fmt.Errorf("no column found with name %s", columnName)
+	}
+
+	for i, record := range records {
+		if i == 0 {
+			continue
+		}
+		if record[colIndex] == columnValue {
+			copy(records[i], newRecord)
+			found = true
+			break
+		}
+	}
+
+	if !found {
+		return fmt.Errorf("no record found with %s=%s", columnName, columnValue)
 	}
 
 	if err := WriteCSV(filename, records); err != nil {
