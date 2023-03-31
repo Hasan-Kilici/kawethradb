@@ -5,15 +5,21 @@ Open Source CSV Database Module For Golang
 Because KawethraDB does not distinguish datatype. 
 which means that a garbage collector programming language like go will be more integrated and work more seamlessly.
 <br>
-- <a href="#create">CreateDB</a>
-- <a href="#insert">Insert</a>
-- <a href="#update">Update</a>
-- <a href="#delete">Delete</a>
-- <a href="#find">Find</a>
-- <a href="#count">Count</a>
+<table>
+<tr>
+<td><a href="#create">CreateDB</a></td>
+<td><a href="#insert">Insert</a></td>
+<td><a href="#update">Update</a></td>
+<td><a href="#delete">Delete</a></td>
+<td><a href="#find">Find</a></td>
+<td><a href="#count">Count</a></td>
+</tr>
+</table>
 <br><br><br>
 ## Commands <br>
+
 <div id="create">
+
 ### Create DB
 ```go
 package main
@@ -47,6 +53,7 @@ func main(){
 ```
 </div>
 <div id="insert">
+
 ### Insert Single
 ```go
 package main
@@ -99,6 +106,7 @@ func main() {
 ```
 </div>
 <div id="find">
+
 ### Find
 ```go
 package main
@@ -115,6 +123,7 @@ func main(){
 ```
 </div>
 <div id="delete">
+
 ## Delete
 ```go
 package main
@@ -129,6 +138,7 @@ func main(){
 ```
 </div>
 <div id="update">
+
 ### Update
 ```go
 package main
@@ -151,6 +161,7 @@ yeniVeri := []string{"2", "Hasan", "Kılıcı", "12"}
 ```
 </div>
 <div id="count">
+
 ### Get Count
 ```go
 package main
