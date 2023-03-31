@@ -316,3 +316,17 @@ func Delete(csvFilePath string, columnName string, columnValue interface{}) erro
 
 	return nil
 }
+
+func Count(filePath string) int {
+	file, err := os.Open(filePath)
+	if err != nil {
+		fmt.Println("Dosya bulunamadı")
+		return 0
+	}
+	defer file.Close()
+
+	count, _ := csv.NewReader(file).ReadAll()
+	newcount := cap(count)
+	return newcount
+}
+
