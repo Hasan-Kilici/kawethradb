@@ -136,6 +136,43 @@ func main(){
 	fmt.Println(find)
 }
 ```
+### Find All (TODO LIST EXAMPLE <a href="https://github.com/Hasan-Kilici/kawethradb-todo-list">Go To link</a>)
+```go
+func main() {
+	r := gin.Default()
+
+	r.LoadHTMLGlob("src/*.tmpl")
+	r.Static("/static", "./static/")
+
+	r.GET("/", func(ctx *gin.Context) {
+		cookie, err := ctx.Cookie("ID")
+		if err != nil {
+			id := kawethradb.Count("./Tasks.csv")
+			ctx.SetCookie("ID", strconv.Itoa(id), 36000, "/", "", false, true)
+			ctx.Redirect(http.StatusFound, "/")
+			return
+		}
+
+		userID, _ := strconv.Atoi(cookie)
+		results, _ := kawethradb.FindAll("./Tasks.csv", "UserID", userID)
+		var tasks []Task
+		for _, result := range results {
+			taskid, _ := strconv.Atoi(result["ID"])
+			task := Task{
+				ID:         taskid,
+				UserID:     userID,
+				Tasks:      result["Tasks"],
+				Taskstatus: result["Taskstatus"],
+			}
+			tasks = append(tasks, task)
+		}
+
+		ctx.HTML(http.StatusOK, "index.tmpl", gin.H{
+			"Tasks":  tasks,
+			"UserID": userID,
+		})
+	})
+```
 </div>
 <div id="delete">
 
