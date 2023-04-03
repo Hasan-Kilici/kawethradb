@@ -376,6 +376,81 @@ func FindByID(csvFilePath string, columnValue interface{}) (map[string]string, e
 	return nil, fmt.Errorf("Csv dosyasında Kayıt bulunamadı %s = %v", "ID", columnValue)
 }
 
+func FindAll(csvFilePath string, columnName string, columnValue interface{}) ([]map[string]string, error) {
+	file, err := os.Open(csvFilePath)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	reader := csv.NewReader(file)
+
+	header, err := reader.Read()
+	if err != nil {
+		return nil, err
+	}
+
+	columnIndex := -1
+	for i, name := range header {
+		if name == columnName {
+			columnIndex = i
+			break
+		}
+	}
+
+	if columnIndex == -1 {
+		return nil, fmt.Errorf("Column %s not found in CSV file", columnName)
+	}
+
+	var results []map[string]string
+
+	for {
+		record, err := reader.Read()
+		if err != nil {
+			if err == io.EOF {
+				break
+			} else {
+				return nil, err
+			}
+		}
+
+		switch v := columnValue.(type) {
+		case int:
+			if val, err := strconv.Atoi(record[columnIndex]); err == nil && val == v {
+				result := make(map[string]string)
+				for i, name := range header {
+					result[name] = record[i]
+				}
+				results = append(results, result)
+			}
+		case float64:
+			if val, err := strconv.ParseFloat(record[columnIndex], 64); err == nil && val == v {
+				result := make(map[string]string)
+				for i, name := range header {
+					result[name] = record[i]
+				}
+				results = append(results, result)
+			}
+		case string:
+			if record[columnIndex] == v {
+				result := make(map[string]string)
+				for i, name := range header {
+					result[name] = record[i]
+				}
+				results = append(results, result)
+			}
+		default:
+			return nil, fmt.Errorf("Unsupported column value type: %T", columnValue)
+		}
+	}
+
+	if len(results) == 0 {
+		return nil, fmt.Errorf("Csv dosyasında Kayıt bulunamadı %s = %v", columnName, columnValue)
+	}
+
+	return results, nil
+}
+
 func Delete(csvFilePath string, columnName string, columnValue interface{}) error {
 	file, err := os.Open(csvFilePath)
 	if err != nil {
