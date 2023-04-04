@@ -13,6 +13,7 @@ which means that a garbage collector programming language like go will be more i
 <td><a href="#delete">Delete</a></td>
 <td><a href="#find">Find</a></td>
 <td><a href="#count">Count</a></td>
+<td><a href="#list">List</a></td>
 </tr>
 </table>
 <br><br><br>
@@ -281,5 +282,105 @@ func main(){
   fmt.Println(count)
 }
 
+```
+</div>
+<div id="list">
+
+### List
+
+```go
+func main() {
+  ogrenci := []Ogrenci{
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+    {ID:1,Ad:"Hasan",Soyad:"KILICI"},
+  }
+
+  fmt.Println(kawethradb.List(ogrenci,10,30))
+}
+```
+
+### List in HTTP
+
+```go
+r := gin.Default()
+
+	r.LoadHTMLGlob("src/*.tmpl")
+	r.Static("/static", "./static/")
+
+	r.GET("/", func(ctx *gin.Context) {
+		cookie, err := ctx.Cookie("ID")
+		if err != nil {
+			id := kawethradb.Count("./Tasks.csv")
+			ctx.SetCookie("ID", strconv.Itoa(id), 36000, "/", "", false, true)
+			ctx.Redirect(http.StatusFound, "/")
+			return
+		}
+
+		userID, _ := strconv.Atoi(cookie)
+		results, _ := kawethradb.FindAll("./Tasks.csv", "UserID", userID)
+		var tasks []Task
+		for _, result := range results {
+			taskid, _ := strconv.Atoi(result["ID"])
+			task := Task{
+				ID:         taskid,
+				UserID:     userID,
+				Tasks:      result["Tasks"],
+				Taskstatus: result["Taskstatus"],
+			}
+			tasks = append(tasks, task)
+            tasks = kawethradb.List(tasks,0,30)
+		}
+
+		ctx.HTML(http.StatusOK, "index.tmpl", gin.H{
+			"Tasks":  tasks,
+			"UserID": userID,
+		})
+	})
 ```
 </div>
