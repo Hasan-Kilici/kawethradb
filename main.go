@@ -8,6 +8,7 @@ import (
 	"os"
 	"reflect"
 	"strconv"
+	"sort"
 )
 
 func CreateDB(dbName, fileName string, records interface{}) error {
@@ -562,4 +563,53 @@ func Count(filePath string) int {
 	count, _ := csv.NewReader(file).ReadAll()
 	newcount := len(count) - 1
 	return newcount
+}
+
+func List(slice interface{}, start, end int) interface{} {
+    switch reflect.TypeOf(slice).Kind() {
+    case reflect.Slice:
+        s := reflect.ValueOf(slice)
+        if start > s.Len()-1 || start > end {
+            return reflect.MakeSlice(reflect.TypeOf(slice), 0, 0).Interface()
+        }
+        if end > s.Len()-1 {
+            end = s.Len()
+        }
+        return s.Slice(start, end).Interface()
+    case reflect.Map:
+        s := reflect.ValueOf(slice)
+        keys := s.MapKeys()
+        sort.Slice(keys, func(i, j int) bool {
+            return keys[i].String() < keys[j].String()
+        })
+        if start > len(keys)-1 || start > end {
+            return reflect.MakeMap(reflect.TypeOf(slice)).Interface()
+        }
+        if end > len(keys)-1 {
+            end = len(keys)
+        }
+        newMap := reflect.MakeMap(reflect.TypeOf(slice))
+        for _, key := range keys[start:end] {
+            newMap.SetMapIndex(key, s.MapIndex(key))
+        }
+        return newMap.Interface()
+    case reflect.Struct:
+        s := reflect.ValueOf(slice)
+        if s.NumField() == 0 {
+            return reflect.New(reflect.TypeOf(slice)).Elem().Interface()
+        }
+        if start > s.NumField()-1 || start > end {
+            return reflect.New(reflect.TypeOf(slice)).Elem().Interface()
+        }
+        if end > s.NumField()-1 {
+            end = s.NumField()
+        }
+        newStruct := reflect.New(reflect.TypeOf(slice)).Elem()
+        for i := start; i < end; i++ {
+            newStruct.Field(i).Set(s.Field(i))
+        }
+        return newStruct.Interface()
+    default:
+        return reflect.Zero(reflect.TypeOf(slice)).Interface()
+    }
 }
